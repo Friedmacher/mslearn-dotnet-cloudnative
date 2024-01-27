@@ -7,12 +7,14 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: storefrontend
     spec:
       containers:
       - name: storefrontend
-        image: [YOUR DOCKER USER NAME]/storeimage:latest
+        image: friedmacher/storeimage:latest
         ports:
         - containerPort: 80
         env:
@@ -21,7 +23,7 @@ spec:
         - name: ProductEndpoint
           value: http://productsbackend
         - name: ImagePrefix
-          value: http://localhost/images
+          value: http://localhost:32101/images
   selector:
     matchLabels:
       app: storefrontend
@@ -35,6 +37,6 @@ spec:
   ports:
   - port: 80
     targetPort: 80
-    nodePort: 32000
+    nodePort: 32100
   selector:
     app: storefrontend
